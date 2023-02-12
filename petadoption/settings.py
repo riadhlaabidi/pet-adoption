@@ -37,7 +37,63 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'rest_framework',
+    'social_django',
 ]
+
+AUTH_USER_MODEL = 'users.User'
+
+REST_FRAMEWORK = {
+    'DEFAULT_PERMISSION_CLASSES': (
+        'rest_framework.permissions.IsAuthenticated',
+    ),
+
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework.authentication.TokenAuthentication',
+    ),
+}
+
+AUTHENTICATION_BACKENDS = [
+    'social_core.backends.google.GoogleOAuth2',
+    'social_core.backends.facebook.FacebookOAuth2',
+    'social_core.backends.facebook.TwitterOAuth',
+    'django.contrib.auth.backends.ModelBackend',
+]
+
+# Read keys from env file
+for key in ['GOOGLE_OAUTH2_KEY',
+            'GOOGLE_OAUTH2_SECRET',
+            'FACEBOOK_KEY',
+            'FACEBOOK_SECRET',
+            'TWITTER_KEY',
+            'TWITTER_SECRET']:
+    exec("SOCIAL_AUTH_{key} = os.environ.get('{key}')".format(key=key))
+
+# ? Later for using PostgreSQL
+# SOCIAL_AUTH_JSONFIELD_ENABLED = True
+
+# ? If I need to specify api version
+# SOCIAL_AUTH_FACEBOOK_API_VERSION = '2.10'
+
+# ? If I want to use custom namespace
+# SOCIAL_AUTH_URL_NAMESPACE = 'social'
+
+SOCIAL_AUTH_FACEBOOK_SCOPE = ['email']
+SOCIAL_AUTH_GOOGLE_OAUTH2_SCOPE = ['email', 'profile']
+
+SOCIAL_AUTH_PIPELINE = (
+    'social_core.pipeline.social_auth.social_details',
+    'social_core.pipeline.social_auth.social_uid',
+    'social_core.pipeline.social_auth.auth_allowed',
+    'social_core.pipeline.social_auth.social_user',
+    'social_core.pipeline.user.get_username',
+    'social_core.pipeline.social_auth.associate_by_email',
+    'social_core.pipeline.user.create_user',
+    'social_core.pipeline.social_auth.associate_user',
+    'social_core.pipeline.social_auth.load_extra_data',
+    'social_core.pipeline.user.user_details',
+)
+
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
