@@ -9,8 +9,8 @@ class User(AbstractBaseUser):
                               max_length=255,
                               unique=True)
 
-    avatar = models.CharField()
-    phone_number = models.CharField()
+    avatar = models.CharField(max_length=255)
+    phone_number = models.CharField(max_length=100)
     birth_date = models.DateField()
     is_organization = models.BooleanField(default=False)
 
