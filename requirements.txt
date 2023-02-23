@@ -6,7 +6,7 @@ defusedxml==0.7.1
 Django==4.1.6
 djangorestframework==3.14.0
 idna==3.4
-markdown-it-py==2.1.0
+markdown-it-py==2.2.0
 mdurl==0.1.2
 multidict==6.0.4
 pycodestyle==2.10.0
